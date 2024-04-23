@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\store_info;
-
+use Auth;
 class Category extends Model
 {
     protected $fillable=['store_id','title','slug','summary','photo','status','is_parent','parent_id','added_by'];
@@ -13,8 +13,13 @@ class Category extends Model
         return $this->hasOne('App\Models\Category','id','parent_id');
     }
     public static function getAllCategory(){
-        $store  = new store_info();
-        return  Category::where('store_id',$store->getStoreId())->orderBy('id','DESC')->with('parent_info')->paginate(10);
+        if(Auth::user()->role == 'admin'){
+            return  Category::orderBy('id','DESC')->with('parent_info')->paginate(10);
+        }else{
+            $store  = new store_info();
+            return  Category::where('store_id',$store->getStoreId())->orderBy('id','DESC')->with('parent_info')->paginate(10);
+        }
+        
     }
 
     public static function shiftChild($cat_id){
@@ -46,10 +51,20 @@ class Category extends Model
         return Category::with('sub_products')->where('slug',$slug)->first();
     }
     public static function countActiveCategory(){
-        $store  = new store_info();
-        $data=Category::where('store_id',$store->getStoreId())->where('status','active')->count();
-        if($data){
-            return $data;
+        if(Auth::user()->role == 'admin'){
+        
+            $data=Category::where('status','active')->count();
+            if($data){
+                return $data;
+            }
+            
+        }else{
+            $store  = new store_info();
+            $data=Category::where('store_id',$store->getStoreId())->where('status','active')->count();
+            if($data){
+                return $data;
+            }
+            
         }
         return 0;
     }

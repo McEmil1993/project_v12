@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cart;
 use App\Models\store_info;
+use Auth;
 class Product extends Model
 {
 
@@ -18,8 +19,14 @@ class Product extends Model
         return $this->hasOne('App\Models\Category','id','child_cat_id');
     }
     public static function getAllProduct(){
-        $store  = new store_info();
-        return Product::with(['cat_info','sub_cat_info'])->where('store_id', $store->getStoreId())->orderBy('id','desc')->paginate(10);
+        if(Auth::user()->role == 'admin'){
+            $store  = new store_info();
+            return Product::with(['cat_info','sub_cat_info'])->orderBy('id','desc')->paginate(10);
+        }else{
+            $store  = new store_info();
+            return Product::with(['cat_info','sub_cat_info'])->where('store_id', $store->getStoreId())->orderBy('id','desc')->paginate(10);
+        }
+       
     }
     public function rel_prods(){
         return $this->hasMany('App\Models\Product','cat_id','cat_id')->where('status','active')->orderBy('id','DESC')->limit(8);
@@ -31,11 +38,19 @@ class Product extends Model
         return Product::with(['cat_info','rel_prods','getReview'])->where('slug',$slug)->first();
     }
     public static function countActiveProduct(){
-        $store  = new store_info();
-        $data=Product::where('store_id', $store->getStoreId())->where('status','active')->count();
-        if($data){
-            return $data;
+        if(Auth::user()->role == 'admin'){
+            $data=Product::where('status','active')->count();
+            if($data){
+                return $data;
+            }
+        }else{
+            $store  = new store_info();
+            $data=Product::where('store_id', $store->getStoreId())->where('status','active')->count();
+            if($data){
+                return $data;
+            }
         }
+        
         return 0;
     }
 

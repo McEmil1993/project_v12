@@ -35,7 +35,7 @@
                 <tr>
                     <td>{{$counter}}</td>
                     <td>{{$review->user_info['name']}}</td>
-                    <td>{{$review->product->title}}</td>
+                    <td>{{isset($review->product->title) ? $review->product->title : 'N/A'}}</td>
                     <td>{{$review->review}}</td>
                     <td>
                      <ul style="list-style:none" class="d-flex">

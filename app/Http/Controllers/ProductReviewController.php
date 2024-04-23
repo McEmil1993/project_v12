@@ -23,6 +23,15 @@ class ProductReviewController extends Controller
         return view('backend.review.index')->with('reviews',$reviews);
     }
 
+    public function reviewPost($rate)
+    {
+        $reviews=ProductReview::getAllReview2($rate);
+
+        
+        
+        return view('backend.review.index')->with('reviews',$reviews);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

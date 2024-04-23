@@ -5,7 +5,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-cart-arrow-down"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin</div>
+        <div class="sidebar-brand-text mx-3"><?php if (Auth::user()->role === 'admin'){ echo 'Admin panel'; }else{ echo 'Shop Panel'; } ?></div>
     </a>
 
     <!-- Divider -->
@@ -43,6 +43,7 @@
     </li>
 
     <?php endif ?> 
+    <?php if (Auth::user()->role === 'store'): ?>
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- Heading -->
@@ -78,9 +79,11 @@
                 <h6 class="collapse-header">Product Options:</h6>
                 <a class="collapse-item" href="{{route('product.index')}}">Products</a>
                 <a class="collapse-item" href="{{route('product.create')}}">Add Product</a>
+                <a class="collapse-item" href="{{route('inventory.index')}}">Inventory</a>
             </div>
         </div>
     </li>
+    
 
     <!-- Categories -->
     <li class="nav-item">
@@ -131,13 +134,44 @@
         </div>
     </li>
 
-
-
-    <!-- Reviews -->
+    {{-- Reports --}}
     <li class="nav-item">
-        <a class="nav-link" href="{{route('review.index')}}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#reportsCollapse"
+            aria-expanded="true" aria-controls="reportsCollapse">
+            <i class="fas fa-cubes"></i>
+            <span>Reports</span>
+        </a>
+        <div id="reportsCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Reports Options:</h6>
+                <a class="collapse-item" href="{{route('report.order')}}">Order Reports</a>
+                <a class="collapse-item" href="{{route('report.service')}}">Service Reports</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- report.service -->
+    <!-- report.order -->
+
+ 
+
+     {{-- Reports --}}
+     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#reviewCollapse"
+            aria-expanded="true" aria-controls="reviewCollapse">
             <i class="fas fa-comments"></i>
-            <span>Reviews</span></a>
+            <span>Reviews</span>
+        </a>
+        <div id="reviewCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Reviews Options:</h6>
+                <a class="collapse-item" href="{{route('review.post',1)}}">One star</a>
+                <a class="collapse-item" href="{{route('review.post',2)}}">Two star</a>
+                <a class="collapse-item" href="{{route('review.post',3)}}">Three star</a>
+                <a class="collapse-item" href="{{route('review.post',4)}}">Four star</a>
+                <a class="collapse-item" href="{{route('review.post',5)}}">Five star</a>
+            </div>
+        </div>
     </li>
 
 
@@ -207,9 +241,8 @@
     <!-- Divider -->
     <!-- <hr class="sidebar-divider d-none d-md-block"> -->
     <!-- Heading -->
-    <div class="sidebar-heading">
-        General Settings
-    </div>
+    <?php endif ?> 
+  
     <!-- <li class="nav-item">
       <a class="nav-link" href="{{route('coupon.index')}}">
           <i class="fas fa-table"></i>
@@ -218,26 +251,37 @@
     <!-- Users -->
     <?php  
 
-      if (Auth::user()->role === 'owner'):
+    if (Auth::user()->role === 'admin'):
       
       ?>
     <li class="nav-item">
-        <a class="nav-link" href="{{route('users.index')}}">
+        <a class="nav-link" href="{{route('ownershop')}}">
             <i class="fas fa-users"></i>
-            <span>Users</span></a>
+            <span>Shop Owners</span></a>
     </li>
-    <?php  
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('client')}}">
+            <i class="fas fa-users"></i>
+            <span>Register Client</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{route('adminuser')}}">
+            <i class="fas fa-users"></i>
+            <span>User Account</span></a>
+    </li>
+   
 
-     endif
-      
-      ?>
     <!-- General settings -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('settings')}}">
             <i class="fas fa-cog"></i>
             <span>Settings</span></a>
     </li>
+        <?php  
 
+    endif
+    
+    ?>
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

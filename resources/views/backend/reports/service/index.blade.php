@@ -1,15 +1,6 @@
 @extends('backend.layouts.master')
-
+@section('title','Moto Shop || Brand Page')
 @section('main-content')
-<?php 
-use App\Models\store_info;
-
-$storeInfo = new store_info();
-$storeId = $storeInfo->getStoreId();
-
-
-
-?>
  <!-- DataTales Example -->
  <div class="card shadow mb-4">
      <div class="row">
@@ -18,60 +9,45 @@ $storeId = $storeInfo->getStoreId();
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Review Lists</h6>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Service List</h6>
+      <a href="{{route('report.service.pdf')}}"
+            class=" btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-download fa-sm text-white-50"></i>
+            Generate PDF</a>
+      <!-- <a href="{{route('brand.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Brand</a> -->
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        @if(count($reviews)>0)
-        <table class="table table-bordered table-hover" id="order-dataTable" width="100%" cellspacing="0">
+        @if(count($service)>0)
+        <table class="table table-bordered table-hover" id="banner-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>#</th>
-              <th>Review By</th>
-              <th>Product</th>
-              <th>Review</th>
-              <th>Rate</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th>Customer name</th>
+              <th>Motor Cycle</th>
+              <th>Service type</th>
+              <th>Assign name</th>
+              <th>Total amount</th>
             </tr>
           </thead>
-          
           <tbody>
-            @foreach($reviews as $review)
-                @if($storeId == $review->product->store_id)
+            <?php $i=1; ?>
+            @foreach($service as $services)   
                 <tr>
-                    <td>{{$review->id}}</td>
-                    <td>{{$review->user_info['name']}}</td>
-                    <td>{{ $review->product ? $review->product->title : 'Product Not Found' }}</td>
-                    <td>{{$review->review}} {{ $storeId }}</td>
+                    <td>{{$i++}}</td>
+                    <td>{{$services->customer_name}}</td>
+                    <td>{{$services->motorcycle_name}}</td>
+                    <td>{{$services->service_types}}</td>
                     <td>
-                      <img style="height: 50px;width: 52px;" src="/emoje/{{$review->rate}}.png">
+                      <?= isset($services->assigned_to)? $services->assigned_to : 'N/A' ?>
                     </td>
-                    <td>{{$review->created_at->format('M d D, Y g: i a')}}</td>
-                    <td>
-                        @if($review->status=='active')
-                          <span class="badge badge-success">{{$review->status}}</span>
-                        @else
-                          <span class="badge badge-warning">{{$review->status}}</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{route('review.edit',$review->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                        <form method="POST" action="{{route('review.destroy',[$review->id])}}">
-                          @csrf
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$review->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                @endif
+                    <td>{{$services->total_amount}}</td>
+                </tr>  
             @endforeach
           </tbody>
         </table>
-        <span style="float:right">{{$reviews->links()}}</span>
+
         @else
-          <h6 class="text-center">No reviews found!!!</h6>
+          <h6 class="text-center">No brands found!!! Please create brand</h6>
         @endif
       </div>
     </div>
@@ -84,6 +60,13 @@ $storeId = $storeInfo->getStoreId();
   <style>
       div.dataTables_wrapper div.dataTables_paginate{
           display: none;
+      }
+      .zoom {
+        transition: transform .2s; /* Animation */
+      }
+
+      .zoom:hover {
+        transform: scale(3.2);
       }
   </style>
 @endpush
@@ -98,12 +81,12 @@ $storeId = $storeInfo->getStoreId();
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-
-      $('#order-dataTable').DataTable( {
+      
+      $('#banner-dataTable').DataTable( {
             "columnDefs":[
                 {
                     "orderable":false,
-                    "targets":[5,6]
+                    "targets":[3,4]
                 }
             ]
         } );
@@ -111,7 +94,7 @@ $storeId = $storeInfo->getStoreId();
         // Sweet alert
 
         function deleteData(id){
-
+            
         }
   </script>
   <script>

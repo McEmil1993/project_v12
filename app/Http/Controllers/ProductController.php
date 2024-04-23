@@ -71,13 +71,13 @@ class ProductController extends Controller
         }
         $data['slug']=$slug;
         $data['is_featured']=$request->input('is_featured',0);
-        $size=$request->input('size');
-        if($size){
-            $data['size']=implode(',',$size);
-        }
-        else{
-            $data['size']='';
-        }
+        $data['size'] = $request->input('size');
+        // if($size){
+        //     $data['size']=implode(',',$size);
+        // }
+        // else{
+        //     $data['size']='';
+        // }
         $user_table = new store_info();
         $data['store_id'] = $user_table->getStoreId();
         // return $size;
@@ -151,13 +151,8 @@ class ProductController extends Controller
 
         $data=$request->all();
         $data['is_featured']=$request->input('is_featured',0);
-        $size=$request->input('size');
-        if($size){
-            $data['size']=implode(',',$size);
-        }
-        else{
-            $data['size']='';
-        }
+        $data['size']=$request->input('size');
+     
         // return $data;
         $status=$product->fill($data)->save();
         if($status){

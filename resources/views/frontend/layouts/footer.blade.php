@@ -38,9 +38,9 @@
 						<div class="single-footer links">
 							<h4>Customer Service</h4>
 							<ul>
-								<li><a href="#">Payment Methods</a></li>
+					
 								<li><a href="#">Money-back</a></li>
-								<li><a href="#">Returns</a></li>
+			
 								<li><a href="#">Shipping</a></li>
 								<li><a href="#">Privacy Policy</a></li>
 							</ul>
@@ -77,11 +77,7 @@
 								<p>© {{date('Y')}} Developed By TMC Students  -  All Rights Reserved.</p>
 							</div>
 						</div>
-						<div class="col-lg-6 col-12">
-							<div class="right">
-								<img src="{{asset('backend/img/payments.png')}}" alt="#">
-							</div>
-						</div>
+						
 					</div>
 				</div>
 			</div>

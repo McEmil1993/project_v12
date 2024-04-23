@@ -9,11 +9,7 @@
                     <div class="inner">
                         <h4>Newsletter</h4>
                         <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-                        <form action="{{route('subscribe')}}" method="post" class="newsletter-inner">
-                            @csrf
-                            <input name="email" placeholder="Your email address" required="" type="email">
-                            <button class="btn" type="submit">Subscribe</button>
-                        </form>
+                       
                     </div>
                     <!-- End Newsletter Inner -->
                 </div>

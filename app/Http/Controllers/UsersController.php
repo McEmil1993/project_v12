@@ -18,6 +18,21 @@ class UsersController extends Controller
         $users=User::orderBy('id','ASC')->paginate(10);
         return view('backend.users.index')->with('users',$users);
     }
+    public function ownerShop()
+    {
+        $users=User::where('role','store')->orderBy('id','ASC')->paginate(10);
+        return view('backend.users.index')->with('users',$users);
+    }
+    public function customer()
+    {
+        $users=User::where('role','user')->orderBy('id','ASC')->paginate(10);
+        return view('backend.users.index')->with('users',$users);
+    }
+    public function adminUser()
+    {
+        $users=User::where('role','admin')->orderBy('id','ASC')->paginate(10);
+        return view('backend.users.index')->with('users',$users);
+    }
 
     /**
      * Show the form for creating a new resource.

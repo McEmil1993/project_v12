@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SmsController;
+// use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,18 @@ Auth::routes(['register'=>false]);
 
 
 Route::post('/send-otp', [SmsController::class, 'sendOtp']);
+
+Route::get('/report/order', 'ReportController@reportOrders')->name('report.order');
+Route::get('/report/service', 'ReportController@reportService')->name('report.service');
+
+Route::get('/report/order/pdf', 'ReportController@pdf')->name('report.order.pdf');
+Route::get('/report/service/pdf', 'ReportController@pdfService')->name('report.service.pdf');
+
+Route::get('/services-list', 'ServiceController@servicesList')->name('services-list');
+
+Route::get('/services-request', 'ServiceController@servicesRequest')->name('services-request');
+Route::post('/services-add', 'ServiceController@store')->name('services-add');
+
 
 Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
@@ -98,6 +111,13 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 Route::post('/admin/services/update_service','ServiceController@update_service')->name('services.update_service');
 
 
+Route::get('/review/post/{rate}','ProductReviewController@reviewPost')->name('review.post');
+
+Route::get('/ownershop','UsersController@ownerShop')->name('ownershop');
+Route::get('/client','UsersController@customer')->name('client');
+Route::get('/adminuser','UsersController@adminUser')->name('adminuser');
+
+
 
 // Backend section start
 
@@ -119,6 +139,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/category','CategoryController');
     // Product
     Route::resource('/product','ProductController');
+
+    Route::resource('/inventory','InventoryController');
     // Ajax for sub category
     Route::post('/category/{id}/child','CategoryController@getChildByParent');
     // POST category
@@ -195,3 +217,4 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+

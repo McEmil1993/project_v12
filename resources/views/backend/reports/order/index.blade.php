@@ -16,7 +16,11 @@ $storeId = $storeInfo->getStoreId();
         </div>
     </div>
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary float-left">Order Lists</h6>
+        <h6 class="m-0 font-weight-bold text-primary float-left">Report Order</h6>
+         <a href="{{route('report.order.pdf')}}"
+            class=" btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-download fa-sm text-white-50"></i>
+            Generate PDF</a>
+    </h5>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -27,57 +31,37 @@ $storeId = $storeInfo->getStoreId();
                         <th>#</th>
                         <th>Order No.</th>
                         <th>Name</th>
-                        <th>Email</th>
-                        <th>Qty.</th>
-                        <th>Charge</th>
+                        <th>Product name</th>
+                        <th>Deliver Address</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
                         <th>Total</th>
-                        <th>Status</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                     @php
+           
+                    $i = 1;
+                    @endphp
                     @foreach($orders as $order)
                     @php
                     $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
+             
                     @endphp
 
                     @foreach ($order->carts as $cart)
 
                     @if($storeId == $cart->product->store_id)
                     <tr>
-                        <td>{{ $order->id }}</td>
+                        <td>{{ $i++ }}</td>
                         <td>{{$order->order_number}}</td>
                         <td>{{$order->first_name}} {{$order->last_name}}</td>
-                        <td>{{$order->email}}</td>
+                        <td>{{$cart->product->title}}</td>
+                        <td>{{$order->address1}} {{$order->address1}}, {{$order->country}}</td>
                         <td>{{$order->quantity}}</td>
-                        <td>@foreach($shipping_charge as $data) ₱ {{number_format($data,2)}} @endforeach</td>
+                        <td>{{$cart->product->price}}</td>
                         <td>₱ {{number_format($order->total_amount,2)}}</td>
-                        <td>
-                            @if($order->status=='new')
-                            <span class="badge badge-primary">NEW</span>
-                            @elseif($order->status=='process')
-                            <span class="badge badge-warning">Processing</span>
-                            @elseif($order->status=='delivered')
-                            <span class="badge badge-success">Delivered</span>
-                            @else
-                            <span class="badge badge-danger">{{$order->status}}</span>
-                            @endif
-                        </td>
-                        <td>
-                            <a href="{{route('order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1"
-                                style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view"
-                                data-placement="bottom"><i class="fas fa-eye"></i></a>
-                            <a href="{{route('order.edit',$order->id)}}" class="btn btn-primary btn-sm float-left mr-1"
-                                style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit"
-                                data-placement="bottom"><i class="fas fa-edit"></i></a>
-                            <form method="POST" action="{{route('order.destroy',[$order->id])}}">
-                                @csrf
-                                @method('delete')
-                                <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}}
-                                    style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                    data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                            </form>
-                        </td>
+            
                     </tr>
                     @endif
 
@@ -116,12 +100,7 @@ div.dataTables_wrapper div.dataTables_paginate {
 <!-- Page level custom scripts -->
 <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
 <script>
-$('#order-dataTable').DataTable({
-    "columnDefs": [{
-        "orderable": false,
-        "targets": [8]
-    }]
-});
+$('#order-dataTable').DataTable();
 
 // Sweet alert
 

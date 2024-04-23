@@ -10,6 +10,17 @@
                 <form method="post" action="/admin/services/update_service">
                     {{csrf_field()}}
                     <input type="hidden" value="{{$edit->id}}" name="edit_id" />
+
+                    <div class="form-group">
+                        <label for="inputTotal" class="col-form-label">Total amount<span
+                                class="text-danger">*</span></label>
+                        <input id="inputTotal" type="text" name="total_amount" placeholder="Enter assign"
+                            value="{{old('total_amount')}} {{$edit->total_amount}}" class="form-control">
+                        @error('assign')
+                        <span class="text-danger">{{$message}}</span>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="inputAssign" class="col-form-label">Assign to <span
                                 class="text-danger">*</span></label>

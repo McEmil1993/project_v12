@@ -75,7 +75,13 @@
         </div>
         <div class="form-group">
           <label for="size">Size</label>
-          <input id="size" type="text" name="size" placeholder="Enter size"  required class="form-control">
+          <select name="size[]" class="form-control selectpicker"  multiple data-live-search="true">
+              <option value="">--Select any size--</option>
+              <option value="S">Small (S)</option>
+              <option value="M">Medium (M)</option>
+              <option value="L">Large (L)</option>
+
+          </select>
         </div>
 
         <div class="form-group">

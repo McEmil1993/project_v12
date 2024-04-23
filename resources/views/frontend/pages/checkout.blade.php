@@ -215,24 +215,6 @@
                                         <input name="payment_method" type="radio" value="cod" required> <label> Cash On
                                             Delivery</label><br>
                                         <!-- <input name="payment_method"  type="radio" value="paypal"> <label> PayPal</label><br> -->
-                                        <input name="payment_method" type="radio" value="cardpay" required> <label> Card
-                                            Payment</label><br>
-
-                                        <!-- Credit Card Details -->
-                                        <div id="creditCardDetails" style="display: none;">
-                                            <label for="cardNumber">Card Number:</label>
-                                            <input type="text" id="cardNumber" name="card_number" maxlength="16"><br>
-
-                                            <label for="cardName">Name on Card:</label>
-                                            <input type="text" id="cardName" name="card_name"><br>
-
-                                            <label for="expirationDate">Expiration Date:</label>
-                                            <input type="text" id="expirationDate" name="expiration_date"
-                                                maxlength="5"><br>
-
-                                            <label for="cvv">CVV:</label>
-                                            <input type="text" id="cvv" name="cvv" maxlength="3"><br>
-                                        </div>
                                     </form-group>
                                 </div>
                             </div>
@@ -240,11 +222,7 @@
                         </div>
                         <!--/ End Order Widget -->
                         <!-- Payment Method Widget -->
-                        <div class="single-widget payement">
-                            <div class="content">
-                                <img src="{{('backend/img/payment-method.png')}}" alt="#">
-                            </div>
-                        </div>
+                        
                         <!--/ End Payment Method Widget -->
                         <!-- Button Widget -->
                         <div class="single-widget get-button">
@@ -318,10 +296,7 @@
                     <div class="inner">
                         <h4>Newsletter</h4>
                         <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
-                            <input name="EMAIL" placeholder="Your email address" required="" type="email">
-                            <button class="btn">Subscribe</button>
-                        </form>
+                       
                     </div>
                     <!-- End Newsletter Inner -->
                 </div>
