@@ -17,11 +17,11 @@ class SmsController extends Controller
         // The data you want to send via POST
         $fields = [
             "Email" => "dacoylomarkemilcajes@gmail.com",
-            "Password" => "MARKemil1993",
+            "Password" => "H20mwrweDLmNPR",
             "Recipients" => ["09157936545"],
             "Message" => "OTP 12345.",
             "ApiCode" => "PR-MARKE784594_FFQLZ",
-            "SenderId" => "MOTO"
+            "SenderId" => ""
         ];
     
         // Initialize cURL session
