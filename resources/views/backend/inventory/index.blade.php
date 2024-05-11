@@ -46,7 +46,7 @@
                     <td>{{$product->title}}</td>
                    
                   
-                    <td> {{$product->slug}}</td>
+                    <td> {{$product->code}}</td>
                     <td>
                       @if($product->stock>0)
                       <span class="badge badge-primary">{{$product->stock}}</span>

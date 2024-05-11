@@ -48,10 +48,10 @@ class ProductController extends Controller
         // return $request->all();
         $this->validate($request,[
             'title'=>'string|required',
-            'summary'=>'string|required',
+            // 'summary'=>'string|required',
             'description'=>'string|nullable',
             'photo'=>'string|required',
-            'size'=>'nullable',
+            // 'size'=>'nullable',
             'stock'=>"required|numeric",
             'cat_id'=>'required|exists:categories,id',
             'brand_id'=>'nullable|exists:brands,id',
@@ -72,6 +72,23 @@ class ProductController extends Controller
         $data['slug']=$slug;
         $data['is_featured']=$request->input('is_featured',0);
         $data['size'] = $request->input('size');
+
+        $letters = '';
+        $numbers = '';
+    
+        // Generate four random letters
+        for ($i = 0; $i < 6; $i++) {
+            $letters .= chr(rand(65, 90)); // ASCII values for 'A' to 'Z'
+        }
+    
+        // Generate four random numbers
+        for ($i = 0; $i < 6; $i++) {
+            $numbers .= rand(0, 9);
+        }
+    
+
+        $data['code']=$letters . $numbers;
+        
         // if($size){
         //     $data['size']=implode(',',$size);
         // }
@@ -134,10 +151,10 @@ class ProductController extends Controller
         $product=Product::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
-            'summary'=>'string|required',
+            // 'summary'=>'string|required',
             'description'=>'string|nullable',
             'photo'=>'string|required',
-            'size'=>'nullable',
+            // 'size'=>'nullable',
             'stock'=>"required|numeric",
             'cat_id'=>'required|exists:categories,id',
             'child_cat_id'=>'nullable|exists:categories,id',

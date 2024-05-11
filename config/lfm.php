@@ -37,6 +37,8 @@ return [
 
     'allow_shared_folder'      => false,
 
+    'allow_multi_selection' => true,
+
     'shared_folder_name'       => 'shares',
 
     /*

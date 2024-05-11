@@ -8,6 +8,7 @@
       <form method="post" action="{{route('users.store')}}">
         {{csrf_field()}}
         <div class="form-group">
+
         <label for="inputFirstName" class="col-form-label">First Name</label>
         <input required id="inputFirstName" type="text" name="firstname" placeholder="Enter first name" value="{{ old('firstname') }}" class="form-control">
         @error('firstname')

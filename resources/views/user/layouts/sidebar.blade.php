@@ -18,18 +18,27 @@
         <span>Dashboard</span></a>
     </li>
 
-    <!-- Divider -->
+    <!-- Divider --> 
     <hr class="sidebar-divider">
 
         <!-- Heading -->
         <div class="sidebar-heading">
             Shop
         </div>
+
+        
     <!--Orders -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('user.order.index')}}">
             <i class="fas fa-hammer fa-chart-area"></i>
             <span>Orders</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/list-service-request">
+            <i class="fas fa-folder fa-chart-area"></i>
+            <span>Service request</span>
         </a>
     </li>
 

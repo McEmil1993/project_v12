@@ -65,7 +65,19 @@
                         <div class="product-des">
                             <!-- Description -->
                             <div class="short">
-                                <h4>{{$product_detail->title}}</h4>
+                                <div class="row">
+                                    <div class="col-12" id="openModalBtn" style=" cursor: pointer; ">
+                                        <div class="openModalBtn" style="width: 30px;float: left;">
+                                            <a href="#"><img src="{{$product_detail->shopimage}}" alt="logo"></a>
+                                        </div>
+                                        <h4 style="margin-top: 5px;margin-left: 40px;">{{$product_detail->shopname}}
+                                        </h4>
+                                    </div>
+
+                                </div>
+
+
+                                <h3 style="margin-top: 10px;">{{$product_detail->title}}</h3>
                                 <div class="rating-main">
                                     <ul class="rating">
                                         @php
@@ -82,7 +94,8 @@
                                         Review</a>
                                 </div>
                                 @php
-                                $after_discount = ( $product_detail->price - (( $product_detail->price * $product_detail->discount ) / 100 ));
+                                $after_discount = ( $product_detail->price - (( $product_detail->price *
+                                $product_detail->discount ) / 100 ));
                                 @endphp
                                 <p class="price"><span class="discount">₱
                                         {{ number_format($after_discount,2) }}</span><s>₱
@@ -103,7 +116,7 @@
                             <!--/ End Color -->
                             <!-- Size -->
                             @if($product_detail->size)
-                            <div class="size mt-4">
+                            <!-- <div class="size mt-4">
                                 <h4>Size</h4>
                                 <ul>
                                     @php
@@ -114,7 +127,7 @@
                                     <li><a href="#" class="one">{{$size}}</a></li>
                                     @endforeach
                                 </ul>
-                            </div>
+                            </div> -->
                             @endif
                             <!--/ End Size -->
                             <!-- Product Buy -->
@@ -309,7 +322,8 @@
 																			}
 																		@endphp --}}
                                                         <h4>{{ceil($product_detail->getReview->avg('rate'))}}
-                                                            <span>(Overall)</span></h4>
+                                                            <span>(Overall)</span>
+                                                        </h4>
                                                         <span>Based on {{$product_detail->getReview->count()}}
                                                             Comments</span>
                                                     </div>
@@ -549,9 +563,71 @@
 </div>
 <!-- Modal end -->
 
+<div id="customModal" class="custom-modal">
+    <div class="modal-box">
+        <span class="close-modal">&times;</span>
+        <h5>Information</h5>
+        <div class="modal-content">
+            <p><strong>Name:</strong><span class="in_name"> <?= $product_detail['store_firstname'] . ' '.  $product_detail['store_lastname']?></span></p>
+            <p><strong>Contact:</strong><span class="in_contact"> <?=$product_detail['shopcontact'] ?> </span></p>
+            <p><strong>Address:</strong> <span class="in_address"> <?=  $product_detail['store_address'] ?> </span></p>
+            <p><strong>Shop Name:</strong><span class="in_shopname"> <?=$product_detail['shopname'] ?> </span></p>
+        </div>
+    </div>
+</div>
 @endsection
 @push('styles')
 <style>
+/* Modal Styles */
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.modal-box {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 30%;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Modal Content Styles */
+.modal-content {
+    padding: 10px;
+    border: 0px solid rgba(0, 0, 0, .2);
+}
+
+.modal-content p {
+    margin-bottom: 10px;
+}
+
+.modal-content p:last-child {
+    margin-bottom: 0;
+}
+
 /* Rating */
 .rating_box {
     display: inline-flex;
@@ -601,6 +677,28 @@
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var openModalBtn = document.getElementById('openModalBtn');
+  var modal = document.getElementById('customModal');
+  var closeModalBtn = modal.querySelector('.close-modal');
+
+  openModalBtn.addEventListener('click', function() {
+    modal.style.display = 'block';
+  });
+
+  closeModalBtn.addEventListener('click', function() {
+    modal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function(event) {
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  });
+});
+
+</script>
 {{-- <script>
         $('.cart').click(function(){
             var quantity=$('#quantity').val();

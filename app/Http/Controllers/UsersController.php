@@ -34,6 +34,12 @@ class UsersController extends Controller
         return view('backend.users.index')->with('users',$users);
     }
 
+    public function registerStore()
+    {
+      
+        return view('auth.register');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -91,8 +97,19 @@ class UsersController extends Controller
         else{
             request()->session()->flash('error','Error occurred while adding user');
         }
-        return redirect()->route('users.index');
 
+        if ($request->role == 'admin') {
+
+            return redirect()->route('adminuser');
+
+        }elseif ($request->role == 'store') {
+
+            return redirect()->route('ownershop');
+        }else{
+
+            return redirect()->route('client');
+        }
+       
     }
 
     /**
@@ -147,7 +164,16 @@ class UsersController extends Controller
         else{
             request()->session()->flash('error','Error occured while updating');
         }
-        return redirect()->route('users.index');
+        if ($request->role == 'admin') {
+
+            return redirect()->route('adminuser');
+        }elseif ($request->role == 'store') {
+
+            return redirect()->route('ownershop');
+        }else{
+
+            return redirect()->route('client');
+        }
 
     }
 
@@ -167,6 +193,72 @@ class UsersController extends Controller
         else{
             request()->session()->flash('error','There is an error while deleting users');
         }
-        return redirect()->route('users.index');
+        return redirect()->route('admin');
     }
+
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'shopimage' => 'required|image|max:2048',
+        ]);
+
+        if ($request->hasFile('shopimage')) {
+            $file = $request->file('shopimage');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('public/uploads', $filename);
+
+            $publicPath = asset('storage/uploads/' . $filename);
+            return response()->json(['path' => $publicPath]);
+        }
+
+        return response()->json(['error' => 'Failed to upload'], 500);
+    }
+
+    public function createAccount(Request $request){
+       
+        $checkemail = User::where('email',$request->email)->first();
+
+        if ($checkemail) {
+            return response()->json(['result' => '0']);
+        }
+
+        $data=$request->all();
+        $data['name'] = $request->first_name.' '. $request->last_name;
+        $data['email'] =  $request->email;
+        $data['password']=Hash::make($request->password);
+        $data['role'] =  'store';
+        $data['status'] = 'active';
+        
+        // dd($data);
+        $status=User::create($data);
+        $getId = User::where('email',$request->email)->select('id')->first();
+        // die($getId);
+        $data_store = [
+            'user_id' => $getId->id,
+            'firstname' => $request->first_name,
+            'middlename' => $request->middle_name,
+            'lastname' => $request->last_name,
+            'gender' => $request->gender,
+            'address' => $request->address,
+            'shopname' => $request->shop_name,
+            'contact' => $request->contact_number,
+            'shopimage' => $request->shopimage,
+        ];
+
+        DB::table('store_info')->insert($data_store);
+
+        if($status){
+            request()->session()->flash('success','User added successfully');
+        }
+        else{
+            request()->session()->flash('error','Error occurred while adding user');
+        }
+
+        return response()->json(['result' => '1']);
+    }
+
+
 }
+
+

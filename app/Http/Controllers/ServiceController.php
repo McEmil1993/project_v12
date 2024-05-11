@@ -182,18 +182,35 @@ class ServiceController extends Controller
 
 
     public function servicesList(){
-        $service = Service::select(
-            'services.*',
+
+        
+        // $service = Service::select(
+        //     'services.*',
+        //     DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
+        //     DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
+        //     'customer_info.contact AS customer_contact',
+        //     'customer_info.address AS customer_address',
+        //     'store_info.address AS store_address',
+        //     'store_info.contact AS store_contact'
+        // )
+        // ->join('store_info', 'store_info.id', '=', 'services.store_id')
+        // ->join('customer_info', 'customer_info.id', '=', 'services.customer_id')
+        // ->get();
+
+        $service = DB::table('service_lists')
+        ->select(
+            'service_lists.*',
             DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
-            DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
-            'customer_info.contact AS customer_contact',
-            'customer_info.address AS customer_address',
             'store_info.address AS store_address',
-            'store_info.contact AS store_contact'
+            'store_info.contact AS store_contact',
+            'store_info.shopname',
+            'store_info.shopimage'
         )
-        ->join('store_info', 'store_info.id', '=', 'services.store_id')
-        ->join('customer_info', 'customer_info.id', '=', 'services.customer_id')
+        ->join('store_info', 'store_info.id', '=', 'service_lists.store_id')
         ->get();
+
+
+        // return response()->json(['result' =>  $service]);
 
       
         return view('frontend.pages.services')->with('service',$service);

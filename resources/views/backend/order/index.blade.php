@@ -27,6 +27,7 @@ $storeId = $storeInfo->getStoreId();
                         <th>#</th>
                         <th>Order No.</th>
                         <th>Name</th>
+                        <th>Contact</th>
                         <th>Email</th>
                         <th>Qty.</th>
                         <th>Charge</th>
@@ -48,6 +49,7 @@ $storeId = $storeInfo->getStoreId();
                         <td>{{ $order->id }}</td>
                         <td>{{$order->order_number}}</td>
                         <td>{{$order->first_name}} {{$order->last_name}}</td>
+                        <td>{{$order->phone}}</td>
                         <td>{{$order->email}}</td>
                         <td>{{$order->quantity}}</td>
                         <td>@foreach($shipping_charge as $data) ₱ {{number_format($data,2)}} @endforeach</td>

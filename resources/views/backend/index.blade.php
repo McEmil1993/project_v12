@@ -12,6 +12,101 @@
     <!-- Content Row -->
     <div class="row">
 
+       <?php if (Auth::user()->role === 'admin'): ?>
+
+
+         <!-- Order -->
+         <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Customer</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                        {{\App\Models\Order::totalCountClient()}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Shop</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{\App\Models\Order::totalCountShop()}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Order -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Shop active</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                        {{\App\Models\Order::totalCountShopActive()}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- Order -->
+         <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Users</div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                        {{\App\Models\Order::totalCountUser()}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <?php endif ?> 
+ 
+        <?php if (Auth::user()->role === 'store'): ?>
+
         <!-- Order -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
@@ -96,9 +191,9 @@
                 </div>
             </div>
         </div>
-
+        <?php endif ?> 
     </div>
-
+    <?php if (Auth::user()->role === 'store'): ?>
     <div class="row">
 
        
@@ -147,6 +242,8 @@
             </div>
         </div>
     </div>
+
+  
     <div class="row">
 
         <!-- Area Chart -->
@@ -170,6 +267,8 @@
         <!-- Content Row -->
         <!-- Visit 'codeastro' for more projects -->
     </div>
+
+    <?php endif ?> 
     @endsection
 
     @push('scripts')
@@ -314,7 +413,7 @@
                         callbacks: {
                             label: function(tooltipItem, chart) {
                                 var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                                return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                                return datasetLabel + ': ₱ ' + number_format(tooltipItem.yLabel);
                             }
                         }
                     }
