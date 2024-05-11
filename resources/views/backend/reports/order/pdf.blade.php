@@ -7,6 +7,7 @@ $storeInfo = new store_info();
 $storeId = $storeInfo->getStoreId();
 
 ?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,12 +67,14 @@ $storeId = $storeInfo->getStoreId();
                     <th>Product Name</th>
                     <th>Deliver Address</th>
                     <th>Quantity</th>
+                    <th>Shipping fees</th>
+                    <th>Discount</th>
                     <th>Unit Price</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-           
+
                 @php
 
                 $i = 1;
@@ -94,11 +97,13 @@ $storeId = $storeInfo->getStoreId();
                     <td>{{$order->address1}} {{$order->address1}}, {{$order->country}}</td>
                     <td>{{$order->quantity}}</td>
                     <td>{{$cart->product->price}}</td>
+                    <td>{{$order->sh_price}}</td>
+                    <td>{{$cart->product->discount}}</td>
                     <td>P {{number_format($order->total_amount,2)}}</td>
 
                 </tr>
                 @php
-                    $totalAmount += $order->total_amount;
+                $totalAmount += $order->total_amount;
                 @endphp
 
                 @endif
@@ -107,12 +112,12 @@ $storeId = $storeInfo->getStoreId();
 
 
                 @endforeach
-           
-          
+
+
             </tbody>
             <tfoot>
                 <tr class="total-row">
-                    <td colspan="7" class="text-right">Total</td>
+                    <td colspan="9" class="text-right">Total</td>
                     <td class="text-right">P {{number_format($totalAmount, 2)}}</td>
                 </tr>
             </tfoot>

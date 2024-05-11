@@ -29,7 +29,7 @@
 						<div class="col-lg-3 col-md-4 col-12">
 							<div class="shop-sidebar">
                                 <!-- Single Widget -->
-                                <div class="single-widget category">
+                                <!-- <div class="single-widget category">
                                     <h3 class="title">Categories</h3>
                                     <ul class="categor-list">
 										@php
@@ -59,7 +59,7 @@
 											@endif
                                         @endforeach --}}
                                     </ul>
-                                </div>
+                                </div> -->
                                 <!--/ End Single Widget -->
                                 <!-- Shop By Price -->
 								<div class="single-widget range">
@@ -102,11 +102,11 @@
 								</div>
 								<!--/ End Shop By Price -->
                                 <!-- Single Widget -->
-                                <div class="single-widget recent-post">
+                                <!-- <div class="single-widget recent-post">
                                     <h3 class="title">Recently Added</h3>
                                     {{-- {{dd($recent_products)}} --}}
                                     @foreach($recent_products as $product)
-                                        <!-- Single Post -->
+                                       
                                         @php 
                                             $photo=explode(',',$product->photo);
                                         @endphp
@@ -122,9 +122,9 @@
                                                 <p class="price"><del class="text-muted">₱ {{number_format($product->price,2)}}</del>   ₱ {{number_format($org,2)}}  </p>                                                
                                             </div>
                                         </div>
-                                        <!-- End Single Post -->
+                                   
                                     @endforeach
-                                </div>
+                                </div> -->
                                 <!--/ End Single Widget -->
                                 <!-- Single Widget -->
                                 <div class="single-widget category">

@@ -62,7 +62,7 @@
     <li class="nav-item">
         <a class="nav-link" href="/admin/services">
             <i class="fas fa-folder"></i>
-            <span>Services</span>
+            <span>Services Request</span>
         </a>
     </li>
 
@@ -130,6 +130,22 @@
                 <h6 class="collapse-header">Shipping Options:</h6>
                 <a class="collapse-item" href="{{route('shipping.index')}}">Shipping</a>
                 <a class="collapse-item" href="{{route('shipping.create')}}">Add Shipping</a>
+            </div>
+        </div>
+    </li>
+
+    {{-- Shipping --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#maintenanceCollapse"
+            aria-expanded="true" aria-controls="maintenanceCollapse">
+            <i class="fas fa-truck"></i>
+            <span>Maintenance</span>
+        </a>
+        <div id="maintenanceCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Maintenance Options:</h6>
+                <a class="collapse-item" href="{{route('mechanic.index')}}">Mechanic</a>
+                <a class="collapse-item" href="{{route('service.index')}}">Service</a>
             </div>
         </div>
     </li>
@@ -282,7 +298,7 @@
     endif
     
     ?>
-    <!-- Sidebar Toggler (Sidebar) -->
+    <!-- Sidebar Toggler (Sidebar) --> 
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>

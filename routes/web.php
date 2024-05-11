@@ -17,7 +17,19 @@ use App\Http\Controllers\SmsController;
 
 Auth::routes(['register'=>false]);
 
+Route::get('/send-sms', 'SMSController@sendSMS');
 
+Route::get('/list-service-request', 'ServiceRequestController@index')->name('listServiceRequest');
+
+Route::get('/display-store', 'ServiceRequestController@displayStore')->name('displayStore');
+
+Route::post('/update-request', 'ServiceRequestController@update')->name('update-request');
+
+Route::post('/store-service-request', 'ServiceRequestController@store')->name('storeServiceRequest');
+
+Route::post('/upload', [App\Http\Controllers\UsersController::class, 'uploadImage'])->name('file.upload');
+
+Route::post('/create-account', [App\Http\Controllers\UsersController::class, 'createAccount'])->name('create.account');
 
 Route::post('/send-otp', [SmsController::class, 'sendOtp']);
 
@@ -117,6 +129,7 @@ Route::get('/ownershop','UsersController@ownerShop')->name('ownershop');
 Route::get('/client','UsersController@customer')->name('client');
 Route::get('/adminuser','UsersController@adminUser')->name('adminuser');
 
+Route::get('/register-store','UsersController@registerStore')->name('register.store');
 
 
 // Backend section start
@@ -128,6 +141,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     })->name('file-manager');
     // user route
     Route::resource('users','UsersController');
+
+    
     // Banner
     Route::resource('banner','BannerController');
     // Brand
@@ -159,9 +174,13 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Services
     Route::resource('/services','ServiceController');
 
+    // Services
+    Route::resource('/service','ServiceListController');
 
     // Shipping
     Route::resource('/shipping','ShippingController');
+// Mechanic
+    Route::resource('/mechanic','MechanicController');
     // Coupon
     Route::resource('/coupon','CouponController');
     // Settings
@@ -176,7 +195,6 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('change-password', 'AdminController@changePassword')->name('change.password.form');
     Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
 });
-
 
 
 
@@ -212,9 +230,11 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::get('change-password', 'HomeController@changePassword')->name('user.change.password.form');
     Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');
 
+
+    Route::post('admin-logout', 'HomeController@logout')->name('admin.logout');
+
 });
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
-

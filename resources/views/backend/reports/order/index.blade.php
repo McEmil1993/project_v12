@@ -34,6 +34,9 @@ $storeId = $storeInfo->getStoreId();
                         <th>Product name</th>
                         <th>Deliver Address</th>
                         <th>Quantity</th>
+                        <th>Shipping fees</th>
+                        <th>Discount</th>
+                        
                         <th>Unit Price</th>
                         <th>Total</th>
                     </tr>
@@ -60,6 +63,8 @@ $storeId = $storeInfo->getStoreId();
                         <td>{{$order->address1}} {{$order->address1}}, {{$order->country}}</td>
                         <td>{{$order->quantity}}</td>
                         <td>{{$cart->product->price}}</td>
+                        <td>{{$order->sh_price}}</td>
+                        <td>{{$cart->product->discount}}</td>
                         <td>₱ {{number_format($order->total_amount,2)}}</td>
             
                     </tr>

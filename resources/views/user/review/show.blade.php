@@ -119,7 +119,7 @@
                         <td> : {{$order->address1}}, {{$order->address2}}</td>
                     </tr>
                     <tr>
-                        <td>Country</td>
+                        <td>Municipal</td>
                         <td> : {{$order->country}}</td>
                     </tr>
                     <tr>

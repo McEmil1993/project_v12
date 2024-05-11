@@ -3,6 +3,8 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use DB;
+
 
 class Order extends Model
 {
@@ -82,6 +84,27 @@ class Order extends Model
         ->leftJoin('store_info', 'store_info.id', '=', 'products.store_id')
         ->count();
         // $data = Order::where('status', 'cancel')->count();
+        return $data;
+    }
+
+
+    public static function totalCountUser(){
+        $data = DB::table('users')->where('role','admin')->count();
+        return $data;
+    }
+
+    public static function totalCountClient(){
+        $data = DB::table('users')->where('role','user')->count();
+        return $data;
+    }
+
+    public static function totalCountShop(){
+        $data = DB::table('users')->where('role','store')->count();
+        return $data;
+    }
+
+    public static function totalCountShopActive(){
+        $data = DB::table('users')->where('role','store')->where('status','active')->count();
         return $data;
     }
     

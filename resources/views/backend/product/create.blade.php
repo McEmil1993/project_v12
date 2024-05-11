@@ -15,13 +15,13 @@
           @enderror
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="summary" class="col-form-label">Summary <span class="text-danger">*</span></label>
           <textarea class="form-control" id="summary" name="summary">{{old('summary')}}</textarea>
           @error('summary')
           <span class="text-danger">{{$message}}</span>
           @enderror
-        </div>
+        </div> -->
 
         <div class="form-group">
           <label for="description" class="col-form-label">Description</label>
@@ -73,10 +73,10 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="size">Size</label>
           <input id="size" type="text" name="size" placeholder="Enter size"  required class="form-control">
-        </div>
+        </div> -->
 
         <div class="form-group">
           <label for="brand_id">Brand</label>

@@ -53,7 +53,19 @@ class FrontendController extends Controller
     }
 
     public function productDetail($slug){
-        $product_detail= Product::getProductBySlug($slug);
+        $data= Product::getProductBySlug($slug);
+
+        $store = DB::table('store_info')->where('id',$data->store_id)->first();
+
+        $product_detail =  $data;
+        $product_detail['store_firstname'] = $store->firstname;
+        $product_detail['store_lastname'] = $store->lastname;
+        $product_detail['store_address'] = $store->address;
+        $product_detail['shopname'] = $store->shopname;
+        $product_detail['shopcontact'] = $store->contact;
+        $product_detail['shopimage'] = $store->shopimage;
+
+
         // dd($product_detail);
         return view('frontend.pages.product_detail')->with('product_detail',$product_detail);
     }
@@ -377,26 +389,37 @@ class FrontendController extends Controller
         return view('frontend.pages.register');
     }
     public function registerSubmit(Request $request){
-        // return $request->all();
-        $this->validate($request,[
-            'name'=>'string|required|min:2',
-            'email'=>'string|required|unique:users,email',
-            'password'=>'required|min:6|confirmed',
-        ]);
-        $data=$request->all();
-        // dd($data);
-        $check=$this->create($data);
 
+        $checkemail = User::where('email',$request->email)->first();
+
+        if ($checkemail) {
+            return response()->json(['result' => '0']);
+        }
+
+        $data=$request->all();
+        $data['name'] = $request->firstname.' '. $request->lastname;
+        $data['email'] =  $request->email;
+        $data['password']=Hash::make($request->password);
+        $data['role'] =  'user';
+        $data['status'] = 'active';
         
-        Session::put('user',$data['email']);
-        if($check){
-            request()->session()->flash('success','Registered successfully');
-            return redirect()->route('home');
-        }
-        else{
-            request()->session()->flash('error','Please try again!');
-            return back();
-        }
+        // dd($data);
+        $status=User::create($data);
+        $getId = User::where('email',$request->email)->select('id')->first();
+        // die($getId);
+        $data_cus = [
+            'user_id' => $getId->id,
+            'firstname' => $request->firstname,
+            'middlename' => $request->middlename,
+            'lastname' => $request->lastname,
+            'gender' => $request->gender,
+            'address' => $request->address,
+            'contact' => $request->contact,
+        ];
+
+        DB::table('customer_info')->insert($data_cus);
+
+        return response()->json(['result' => '1']);
     }
     public function create(array $data){
         return User::create([

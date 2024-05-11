@@ -1,3 +1,5 @@
+
+
 @extends('backend.layouts.master')
 
 @section('main-content')
@@ -33,12 +35,13 @@ $storeId = $storeInfo->getStoreId();
               <th>Rate</th>
               <th>Date</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Action </th>
             </tr>
           </thead>
           
           <tbody>
             @foreach($reviews as $review)
+          
                 @if($storeId == $review->product->store_id)
                 <tr>
                     <td>{{$review->id}}</td>
@@ -66,6 +69,7 @@ $storeId = $storeInfo->getStoreId();
                     </td>
                 </tr>
                 @endif
+        
             @endforeach
           </tbody>
         </table>

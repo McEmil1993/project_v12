@@ -9,6 +9,7 @@ use App\Rules\MatchOldPassword;
 use Hash;
 use Carbon\Carbon;
 use Spatie\Activitylog\Models\Activity;
+use DB;
 class AdminController extends Controller
 {
     public function index(){
@@ -29,6 +30,13 @@ class AdminController extends Controller
     public function profile(){
         $profile=Auth()->user();
         // return $profile;
+        if($profile->role == 'store'){
+            $user_pro = DB::table('store_info')
+            ->where('user_id', $profile->id)->first();
+
+            $profile['user_pro'] = $user_pro;
+        }
+        
         return view('backend.users.profile')->with('profile',$profile);
     }
 
@@ -37,6 +45,16 @@ class AdminController extends Controller
         $user=User::findOrFail($id);
         $data=$request->all();
         $status=$user->fill($data)->save();
+
+        $data_store = [
+            'shopname'=> $request->name,
+            'address' => $request->address,
+            'contact' => $request->contact,
+        ];
+        
+        DB::table('store_info')->where('user_id', $id)->update($data_store);
+
+
         if($status){
             request()->session()->flash('success','Successfully updated your profile');
         }
@@ -114,4 +132,14 @@ class AdminController extends Controller
     //     $activity= Activity::all();
     //     return view('backend.layouts.activity')->with('activities',$activity);
     // }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin');
+    }
 }

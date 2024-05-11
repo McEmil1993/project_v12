@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\Cart;
+use App\User;
 use Illuminate\Support\Str;
 use Helper;
 class CartController extends Controller
@@ -89,9 +91,9 @@ class CartController extends Controller
             $cart = new Cart;
             $cart->user_id = auth()->user()->id;
             $cart->product_id = $product->id;
-            $cart->price = ($product->price-($product->price*$product->discount)/100);
+            $cart->price = ($product->price -($product->price*$product->discount)/100);
             $cart->quantity = $request->quant[1];
-            $cart->amount=($product->price * $request->quant[1]);
+            $cart->amount=(($product->price - ($product->price*$product->discount)/100) * $request->quant[1]);
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
             // return $cart;
             $cart->save();
@@ -250,6 +252,11 @@ class CartController extends Controller
         //     $cart->fill($data);
         //     $cart->save();
         // }
-        return view('frontend.pages.checkout');
+        $user = User::where('id',auth()->user()->id)->where('role','user')->first();
+
+
+        $custom = DB::table('customer_info')->where('user_id',auth()->user()->id)->first();
+
+        return view('frontend.pages.checkout',compact('user','custom'));
     }
 }

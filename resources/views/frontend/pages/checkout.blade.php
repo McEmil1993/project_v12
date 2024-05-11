@@ -37,8 +37,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>First Name<span>*</span></label>
-                                    <input type="text" name="first_name" placeholder="" value="{{old('first_name')}}"
-                                        value="{{old('first_name')}}" required>
+                                    <input type="text" name="first_name" placeholder="" value="{{$custom->firstname}}" required>
                                     @error('first_name')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -47,7 +46,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Last Name<span>*</span></label>
-                                    <input type="text" name="last_name" placeholder="" value="{{old('lat_name')}}"
+                                    <input type="text" name="last_name" placeholder="" value="{{$custom->lastname}}"
                                         required>
                                     @error('last_name')
                                     <span class='text-danger'>{{$message}}</span>
@@ -57,7 +56,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Email Address<span>*</span></label>
-                                    <input type="email" name="email" placeholder="" value="{{old('email')}}" required>
+                                    <input type="email" name="email" placeholder="" value="{{$user->email}}" required>
                                     @error('email')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -66,7 +65,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Phone Number <span>*</span></label>
-                                    <input type="number" name="phone" placeholder="" required value="{{old('phone')}}">
+                                    <input type="number" name="phone" placeholder="" required value="{{$custom->contact}}">
                                     @error('phone')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -130,7 +129,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Address Line 1<span>*</span></label>
-                                    <input type="text" name="address1" placeholder="" value="{{old('address1')}}">
+                                    <input type="text" name="address1" placeholder="" value="{{$custom->address}}" required>
                                     @error('address1')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -139,7 +138,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Address Line 2</label>
-                                    <input type="text" name="address2" placeholder="" value="{{old('address2')}}">
+                                    <input type="text" name="address2" placeholder="" value="{{old('address2')}}" required>
                                     @error('address2')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -148,7 +147,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Postal Code</label>
-                                    <input type="text" name="post_code" placeholder="" value="{{old('post_code')}}">
+                                    <input type="text" name="post_code" placeholder="" value="{{old('post_code')}}" required>
                                     @error('post_code')
                                     <span class='text-danger'>{{$message}}</span>
                                     @enderror
@@ -166,14 +165,14 @@
                             <h2>CART TOTAL</h2>
                             <div class="content">
                                 <ul>
-                                    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart
-                                        Subtotal<span>₱ {{number_format(Helper::totalCartPrice(),2)}}</span></li>
+                                    <li class="order_subtotal" data-price="{{Helper::totalCartAmount()}}">Cart
+                                        Subtotal<span>₱ {{number_format(Helper::totalCartAmount(),2)}}</span></li>
                                     <li class="shipping">
                                         Shipping Cost
                                         @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
                                         <select name="shipping" class="nice-select" required>
                                             <option value="">Select your address</option>
-                                            @foreach(Helper::shipping() as $shipping)
+                                            @foreach(Helper::getshipping() as $shipping)
                                             <option value="{{$shipping->id}}" class="shippingOption"
                                                 data-price="{{$shipping->price}}">{{$shipping->type}}: ₱
                                                 {{$shipping->price}}</option>
@@ -189,7 +188,7 @@
                                             {{number_format(session('coupon')['value'],2)}}</span></li>
                                     @endif
                                     @php
-                                    $total_amount=Helper::totalCartPrice();
+                                    $total_amount=Helper::totalCartAmount();
                                     if(session('coupon')){
                                     $total_amount=$total_amount-session('coupon')['value'];
                                     }
@@ -242,48 +241,7 @@
 <!--/ End Checkout -->
 
 <!-- Start Shop Services Area  -->
-<section class="shop-services section home">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-rocket"></i>
-                    <h4>Free shiping</h4>
-                    <p>Orders over $100</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-reload"></i>
-                    <h4>Free Return</h4>
-                    <p>Within 30 days returns</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-lock"></i>
-                    <h4>Sucure Payment</h4>
-                    <p>100% secure payment</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-                <!-- Start Single Service -->
-                <div class="single-service">
-                    <i class="ti-tag"></i>
-                    <h4>Best Peice</h4>
-                    <p>Guaranteed price</p>
-                </div>
-                <!-- End Single Service -->
-            </div>
-        </div>
-    </div>
-</section>
+
 <!-- End Shop Services -->
 
 <!-- Start Shop Newsletter  -->
@@ -293,11 +251,7 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 col-12">
                     <!-- Start Newsletter Inner -->
-                    <div class="inner">
-                        <h4>Newsletter</h4>
-                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-                       
-                    </div>
+                    
                     <!-- End Newsletter Inner -->
                 </div>
             </div>

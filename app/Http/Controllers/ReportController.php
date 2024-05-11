@@ -23,13 +23,17 @@ class ReportController extends Controller
     }
 
     public function reportOrders(){
-        $orders = Order::orderBy('id', 'DESC')
+        $orders = Order::select('orders.*','shippings.id as sh_id','shippings.price as sh_price')
+        ->orderBy('id', 'DESC')
+        ->join('shippings','shippings.id','=','orders.shipping_id')
         ->with(['carts' => function ($query) {
             $query->with(['product' => function ($query) {
-                $query->select('id', 'store_id', 'price','title'); // Select only necessary fields
+                $query->select('id', 'store_id', 'price','title','discount'); // Select only necessary fields
             }]);
         }])
         ->paginate(10);
+        
+
         
         return view('backend.reports.order.index')->with('orders',$orders);
     }
@@ -61,10 +65,12 @@ class ReportController extends Controller
 
     public function pdf(Request $request){
 
-        $orders = Order::orderBy('id', 'DESC')
+        $orders = Order::select('orders.*','shippings.id as sh_id','shippings.price as sh_price')
+        ->orderBy('id', 'DESC')
+        ->join('shippings','shippings.id','=','orders.shipping_id')
         ->with(['carts' => function ($query) {
             $query->with(['product' => function ($query) {
-                $query->select('id', 'store_id', 'price','title'); // Select only necessary fields
+                $query->select('id', 'store_id', 'price','title','discount'); // Select only necessary fields
             }]);
         }])->get();
 

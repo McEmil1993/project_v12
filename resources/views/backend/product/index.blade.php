@@ -19,12 +19,13 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>Product Code</th>
               <th>Title</th>
               <th>Category</th>
               <th>Featured</th>
               <th>Price</th>
               <th>Discount</th>
-              <!-- <th>Size</th> -->
+              
               <th>Condition</th>
               <th>Brand</th>
               <th>Photo</th>
@@ -42,6 +43,7 @@
               @endphp
                 <tr>
                     <td>{{$product->id}}</td>
+                    <td>{{$product->code}}</td>
                     <td>{{$product->title}}</td>
                     <td>{{$product->cat_info['title']}}
                       <sub>
@@ -51,7 +53,7 @@
                     <td>{{(($product->is_featured==1)? 'Yes': 'No')}}</td>
                     <td>₱ {{$product->price}}</td>
                     <td>  {{$product->discount}}%</td>
-                    <!-- <td>{{$product->size}}</td> -->
+                    
                     <td>{{$product->condition}}</td>
                     <td> {{ucfirst($product->brand->title)}}</td>
                     <td>

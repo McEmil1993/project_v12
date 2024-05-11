@@ -20,7 +20,6 @@
             <tr>
               <th>#</th>
               <th>Title</th>
-              <th>Slug</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -30,7 +29,6 @@
                 <tr>
                     <td>{{$brand->id}}</td>
                     <td>{{$brand->title}}</td>
-                    <td>{{$brand->slug}}</td>
                     <td>
                         @if($brand->status=='active')
                             <span class="badge badge-success">{{$brand->status}}</span>
@@ -107,14 +105,7 @@
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
       
-      $('#banner-dataTable').DataTable( {
-            "columnDefs":[
-                {
-                    "orderable":false,
-                    "targets":[3,4]
-                }
-            ]
-        } );
+      $('#banner-dataTable').DataTable();
 
         // Sweet alert
 

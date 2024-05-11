@@ -119,6 +119,19 @@ class Helper{
         }
     }
 
+    public static function totalCartAmount($user_id=''){
+        if(Auth::check()){
+            if($user_id=="") $user_id=auth()->user()->id;
+            // return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
+            return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
+        }
+        else{
+            return 0;
+        }
+    }
+
+    
+
     public static function getID($user_id=''){
         if(Auth::check()){
             if($user_id=="") $user_id=auth()->user()->id;
@@ -192,6 +205,23 @@ class Helper{
     public static function shipping(){
         return Shipping::orderBy('id','DESC')->get();
     }
+
+    public static function getshipping($user_id=''){
+        if(Auth::check()){
+            if($user_id=="") $user_id=auth()->user()->id;
+            // return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
+
+            $product = Cart::select('product_id')->where('user_id',$user_id)->where('order_id',null)->first();
+
+            $store_id = Product::select('store_id')->where('id',$product->product_id)->first();
+
+            return Shipping::where('store_id',$store_id->store_id)->orderBy('id','DESC')->get();
+        }
+        else{
+            return 0;
+        }
+    }
+
 }
 
 ?>
