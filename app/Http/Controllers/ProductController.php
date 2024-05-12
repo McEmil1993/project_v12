@@ -87,7 +87,7 @@ class ProductController extends Controller
         }
     
 
-        $data['code']=$letters . $numbers;
+        $data['code']= $letters . $numbers;
         
         // if($size){
         //     $data['size']=implode(',',$size);
