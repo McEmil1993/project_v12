@@ -433,13 +433,6 @@ class FrontendController extends Controller
         $otp = mt_rand(100000, 999999);
 
         $message = "Your One-Time Password (OTP) is: " . $otp . ". Do not share this OTP with anyone.";
-        
-        $data = [
-            'number' => $request->contact,
-            'message' => $message
-        ];
-
-        $store_info->sendMessage($data);
 
         $datainsert = [
             'user_id' => $getId->id,
@@ -448,6 +441,15 @@ class FrontendController extends Controller
         ];
 
         DB::table('otps')->insert($datainsert);
+        
+        $data = [
+            'number' => $request->contact,
+            'message' => $message
+        ];
+
+        $store_info->sendMessage($data);
+
+       
         
         $get = DB::table('otps')->where('otp',$otp)->where('status','pending')->first();
 

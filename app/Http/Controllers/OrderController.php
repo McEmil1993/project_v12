@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\store_info;
+
 class OrderController extends Controller
 {
     /**
@@ -104,7 +106,7 @@ class OrderController extends Controller
         $order_data['shipping_id']=$request->shipping;
         $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
-        $order_data['sub_total']=Helper::totalCartPrice();
+        $order_data['sub_total']=Helper::totalCartAmount();
         $order_data['quantity']=Helper::cartCount();
         if(session('coupon')){
             $order_data['coupon']=session('coupon')['value'];
@@ -114,7 +116,7 @@ class OrderController extends Controller
                 $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
             }
             else{
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0];
+                $order_data['total_amount']=Helper::totalCartAmount()+$shipping[0];
             }
         }
         else{
@@ -122,7 +124,7 @@ class OrderController extends Controller
                 $order_data['total_amount']=Helper::totalCartPrice()-session('coupon')['value'];
             }
             else{
-                $order_data['total_amount']=Helper::totalCartPrice();
+                $order_data['total_amount']=Helper::totalCartAmount();
             }
         }
         // return $order_data['total_amount'];
@@ -223,11 +225,31 @@ class OrderController extends Controller
         }
         $status=$order->fill($data)->save();
         if($status){
+            $store_info = new store_info();
+     
+            if ($request->status == 'process') {
+                $data = [
+                    'number' => $request->contact,
+                    'message' => "Your order in progress. Please wait for further updates."
+                ];
+        
+                $store_info->sendMessage($data);
+            }elseif ($request->status == 'cancel'){
+                $data = [
+                    'number' => $request->contact,
+                    'message' => "Cancellation is not available . Please proceed as planned."
+                ];
+        
+                $store_info->sendMessage($data);
+            }
+
             request()->session()->flash('success','Successfully updated order');
         }
         else{
             request()->session()->flash('error','Error while updating order');
         }
+
+
         return redirect()->route('order.index');
     }
 

@@ -294,7 +294,7 @@
                     console.log(response);
 
                     if (response.result == '1') {
-                        location.href = '/admin'
+                        location.href = '/verifyAccount?id='+response.data.id;
                     } else {
                         $('#email').css('border', '2px solid red');
                         alert('Email already exist!');

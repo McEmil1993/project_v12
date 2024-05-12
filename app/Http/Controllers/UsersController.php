@@ -228,7 +228,7 @@ class UsersController extends Controller
         $data['email'] =  $request->email;
         $data['password']=Hash::make($request->password);
         $data['role'] =  'store';
-        $data['status'] = 'active';
+        $data['status'] = 'inactive';
         
         // dd($data);
         $status=User::create($data);
@@ -255,7 +255,42 @@ class UsersController extends Controller
             request()->session()->flash('error','Error occurred while adding user');
         }
 
-        return response()->json(['result' => '1']);
+        $store_info = new store_info();
+        $otp = mt_rand(100000, 999999);
+
+        $message = "Your One-Time Password (OTP) is: " . $otp . ". Do not share this OTP with anyone.";
+
+        $datainsert = [
+            'user_id' => $getId->id,
+            'otp' => $otp,
+            'status' => 'pending'
+        ];
+
+        DB::table('otps')->insert($datainsert);
+        
+        $data = [
+            'number' => $request->contact_number,
+            'message' => $message
+        ];
+
+        $store_info->sendMessage($data);
+
+       
+        
+        $get = DB::table('otps')->where('otp',$otp)->where('status','pending')->first();
+
+        return response()->json(['result' => '1','data'=>$get]);
+    }
+
+
+    public function verifyAccount() {
+
+        $getId = $_GET['id'];
+
+        $data = DB::table('otps')->select('otps.id','otps.user_id','store_info.contact')->join('store_info','store_info.user_id','=','otps.user_id')->where('otps.id',$getId)->where('otps.status','pending')->first();
+
+
+        return view('auth.otp',compact('data'));
     }
 
 

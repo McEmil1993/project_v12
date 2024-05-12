@@ -23,6 +23,8 @@ Route::get('/list-service-request', 'ServiceRequestController@index')->name('lis
 
 Route::get('/display-store', 'ServiceRequestController@displayStore')->name('displayStore');
 
+Route::get('/verifyAccount', 'UsersController@verifyAccount')->name('verifyAccount');
+
 Route::post('/update-request', 'ServiceRequestController@update')->name('update-request');
 
 Route::post('/store-service-request', 'ServiceRequestController@store')->name('storeServiceRequest');
@@ -65,7 +67,7 @@ Route::get('/home', 'FrontendController@index');
 Route::get('user/otp','FrontendController@getOTP')->name('otp.form');
 
 
-
+Route::post('/checkOtpStore','ServiceController@checkOtpStore')->name('checkOtpStore');
 Route::post('/checkOtp','ServiceController@checkOtp')->name('checkOtp');
 
 

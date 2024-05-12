@@ -408,6 +408,28 @@ class ServiceController extends Controller
         }
     }
 
+
+    public function checkOtpStore(Request $request)
+    {
+    
+        $get = DB::table('otps')->where('otp',$request->otp)->where('user_id',$request->user_id)->where('status','pending')->first();
+
+        if ($get) {
+
+            DB::table('otps')->where('id',$get->id)->update(['status'=>'approved']);
+
+            DB::table('users')->where('id',$get->user_id)->update(['status'=>'active']);
+
+
+            return redirect()->route('admin');
+
+         
+        } else {
+            request()->session()->flash('error','Invalid OTP. Please try again.');
+            return redirect()->back();
+        }
+    }
+
     
     /**
      * Remove the specified resource from storage.
