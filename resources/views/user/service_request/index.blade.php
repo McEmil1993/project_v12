@@ -42,8 +42,11 @@
                           <span class="badge badge-danger">Cancel</span>
                         @elseif($service->status=='pending')
                           <span class="badge badge-warning">Pending</span>
+
+                        @elseif($service->status=='ongoing')
+                          <span class="badge badge-primary">Ongoing</span>
                         @else
-                          <span class="badge badge-success">Done</span>
+                          <span class="badge badge-success">Service Finish</span>
                         @endif
                     </td>
                     <td>

@@ -61,7 +61,15 @@ Route::get('/','FrontendController@home')->name('home');
 
 // Frontend Routes
 Route::get('/home', 'FrontendController@index');
-Route::get('/about-us','FrontendController@aboutUs')->name('about-us');
+
+Route::get('user/otp','FrontendController@getOTP')->name('otp.form');
+
+
+
+Route::post('/checkOtp','ServiceController@checkOtp')->name('checkOtp');
+
+
+Route::get('/verify','FrontendController@aboutUs')->name('verify');
 Route::get('/contact','FrontendController@contact')->name('contact');
 Route::post('/contact/message','MessageController@store')->name('contact.store');
 Route::get('product-detail/{slug}','FrontendController@productDetail')->name('product-detail');

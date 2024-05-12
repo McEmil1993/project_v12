@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
+use Twilio\Rest\Client;
+
 
 class store_info extends Model
 {
@@ -35,4 +37,24 @@ class store_info extends Model
     //         return null;
     //     }
     // }
+
+
+    public function sendMessage($data)
+    {
+
+        $sid = 'AC2786f88186b06eb5f4eaf058596029d5';
+        $token = 'b4fd9f09abd5fc711f25af08c0078f9c';
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+        ->create($data['number'], // to
+            array(
+                "from" => "+15078794698",
+                "body" => $data['message']
+            )
+        );
+
+        return response()->json(['message' => 'SMS sent successfully', 'sid' => $message]);
+
+    }
 }

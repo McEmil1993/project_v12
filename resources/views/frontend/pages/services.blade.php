@@ -551,18 +551,20 @@ $(document).ready(function() {
 
   // Add click event to all buttons
   btns.on("click", function() {
-    $('.in_id').val($('.myBtn').attr('data-id'));
+    $('.in_id').val($(this).attr('data-id'));
     modal.css("display", "block");
   });
 
   // Close the modal when the close element is clicked
   span.on("click", function() {
+    $('.in_id').val('');
     modal.css("display", "none");
   });
 
   // Close the modal if the user clicks outside of it
   $(window).on("click", function(event) {
     if (event.target == modal[0]) {
+        $('.in_id').val('');
       modal.css("display", "none");
     }
   });

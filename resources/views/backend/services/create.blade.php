@@ -11,7 +11,10 @@
                     {{csrf_field()}}
                     <input type="hidden" value="{{$edit->id}}" name="edit_id" />
 
+                    <input type="hidden" value="{{$edit->customer_contact}}" name="contact" />
+
                     <div class="form-group">
+                        
                         <label for="inputTotal" class="col-form-label">Total amount<span
                                 class="text-danger">*</span></label>
                         <input id="inputTotal" type="text" name="total_amount" placeholder="Enter assign"
@@ -24,8 +27,13 @@
                     <div class="form-group">
                         <label for="inputAssign" class="col-form-label">Assign to <span
                                 class="text-danger">*</span></label>
-                        <input id="inputAssign" type="text" name="assign" placeholder="Enter assign"
-                            value="{{old('assign')}} {{$edit->assigned_to}}" class="form-control">
+
+                                <select id="inputAssign" name="assign" class="form-control">
+                            @foreach (\App\Http\Controllers\ServiceController::getMechanic() as $mechanic)
+                                <option value="{{ $mechanic->id }}">{{ $mechanic->name }}</option>
+                            @endforeach
+                        </select>
+
                         @error('assign')
                         <span class="text-danger">{{$message}}</span>
                         @enderror
@@ -35,6 +43,9 @@
                         <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
                         <select name="status" class="form-control">
                             <option value="pending" <?php if($edit->status == 'pending'){ echo 'selected';} ?>>Pending
+                            </option>
+                            <option value="ongoing"
+                                <?php if($edit->status == 'ongoing'){ echo 'selected';} ?>>Ongoing
                             </option>
                             <option value="service_finished"
                                 <?php if($edit->status == 'service_finished'){ echo 'selected';} ?>>Service Finish

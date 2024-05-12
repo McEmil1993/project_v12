@@ -52,6 +52,7 @@ class HomeController extends Controller
         }
         return redirect()->back();
     }
+    
 
     // Order
     public function orderIndex(){

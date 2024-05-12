@@ -19,23 +19,59 @@ class ServiceController extends Controller
         $user_table = new store_info();
         $getId = $user_table->getStoreId(); // Ensure this method returns the correct store ID.
 
-        $service = Service::select(
-            'services.*',
-            DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
-            DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
-            'customer_info.contact AS customer_contact',
-            'customer_info.address AS customer_address',
-            'store_info.address AS store_address',
-            'store_info.contact AS store_contact'
-        )
-        ->where('services.store_id', $getId)
-        ->join('store_info', 'store_info.id', '=', 'services.store_id')
-        ->join('customer_info', 'customer_info.id', '=', 'services.customer_id')
+        // $service = Service::select(
+        //     'services.*',
+            // DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
+            // DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
+            // 'customer_info.contact AS customer_contact',
+            // 'customer_info.address AS customer_address',
+            // 'store_info.address AS store_address',
+            // 'store_info.contact AS store_contact'
+        // )
+        // ->where('services.store_id', $getId)
+        // ->join('store_info', 'store_info.id', '=', 'services.store_id')
+        // ->join('customer_info', 'customer_info.id', '=', 'services.customer_id')
+        // ->get();
+
+        $service = DB::table('service_requests')
+        ->select('service_requests.id',
+        'service_requests.service_id',
+        'service_requests.mechanic_id',
+        'service_requests.owner_name',
+        'service_requests.contact_number',
+        'service_requests.motorcycle_name',
+        'service_requests.motorcycle_type',
+        'service_requests.request_type',
+        'service_requests.address',
+        'service_requests.status',
+        'service_requests.created_at as date_of_request',
+        'service_lists.store_id',
+        'service_lists.name as service_types',
+        'service_lists.name',
+        'service_lists.description',
+        'service_lists.rate as total_amount',
+        'store_info.shopname as assigned_to',
+        'store_info.shopname',
+        'store_info.contact as service_contact',
+        'store_info.address as service_address',
+        'store_info.contact as shopcontact',
+        'store_info.address as shopaddress',
+        'customer_info.id as customer_id',
+        DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
+        DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
+        'customer_info.contact AS customer_contact',
+        'customer_info.address AS customer_address',
+        'store_info.address AS store_address',
+        'store_info.contact AS store_contact')
+        ->where('service_lists.store_id',$getId)
+        ->join('service_lists','service_lists.id','=','service_requests.service_id')
+        ->join('store_info','store_info.id','=','service_lists.store_id')
+        ->join('customer_info','customer_info.user_id','=','service_requests.user_id')
         ->get();
 
-        // echo json_encode($service);
+        // echo json_encode($data);
 
-        //  die();
+        // die();
 
         return view('backend.services.index')->with('service',$service);
 
@@ -106,21 +142,57 @@ class ServiceController extends Controller
         $user_table = new store_info();
         $getId = $user_table->getStoreId(); // Ensure this method returns the correct store ID.
 
-        $services = Service::select(
-            'services.*',
-            DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
-            DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
-            'customer_info.contact AS customer_contact',
-            'customer_info.address AS customer_address',
-            'store_info.address AS store_address',
-            'store_info.contact AS store_contact'
-        )
-        ->where('services.store_id', $getId)
-        ->where('services.id', $id)
-        ->join('store_info', 'store_info.id', '=', 'services.store_id')
-        ->join('customer_info', 'customer_info.id', '=', 'services.customer_id')
-        ->first();
+        // $services = Service::select(
+        //     'services.*',
+        //     DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
+        //     DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
+        //     'customer_info.contact AS customer_contact',
+        //     'customer_info.address AS customer_address',
+        //     'store_info.address AS store_address',
+        //     'store_info.contact AS store_contact'
+        // )
+        // ->where('services.store_id', $getId)
+        // ->where('services.id', $id)
+        // ->join('store_info', 'store_info.id', '=', 'services.store_id')
+        // ->join('customer_info', 'customer_info.id', '=', 'services.customer_id')
+        // ->first();
 
+        $services = DB::table('service_requests')
+        ->select('service_requests.id',
+        'service_requests.service_id',
+        'service_requests.mechanic_id',
+        'service_requests.owner_name',
+        'service_requests.contact_number',
+        'service_requests.motorcycle_name',
+        'service_requests.motorcycle_type',
+        'service_requests.request_type',
+        'service_requests.address',
+        'service_requests.status',
+        'service_requests.created_at as date_of_request',
+        'service_lists.store_id',
+        'service_lists.name as service_types',
+        'service_lists.name',
+        'service_lists.description',
+        'service_lists.rate as total_amount',
+        'store_info.shopname as assigned_to',
+        'store_info.shopname',
+        'store_info.contact as service_contact',
+        'store_info.address as service_address',
+        'store_info.contact as shopcontact',
+        'store_info.address as shopaddress',
+        'customer_info.id as customer_id',
+        DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
+        DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
+        'customer_info.contact AS customer_contact',
+        'customer_info.address AS customer_address',
+        'store_info.address AS store_address',
+        'store_info.contact AS store_contact')
+        ->where('service_lists.store_id',$getId)
+        ->where('service_requests.id', $id)
+        ->join('service_lists','service_lists.id','=','service_requests.service_id')
+        ->join('store_info','store_info.id','=','service_lists.store_id')
+        ->join('customer_info','customer_info.user_id','=','service_requests.user_id')
+        ->first();
         // echo json_encode($service);
 
         //  die();
@@ -138,7 +210,44 @@ class ServiceController extends Controller
     public function edit($id)
     {
         //
-        $edit = Service::where('id', $id)->first();
+        $user_table = new store_info();
+        $getId = $user_table->getStoreId();
+        $edit = DB::table('service_requests')
+        ->select('service_requests.id',
+        'service_requests.service_id',
+        'service_requests.mechanic_id',
+        'service_requests.owner_name',
+        'service_requests.contact_number',
+        'service_requests.motorcycle_name',
+        'service_requests.motorcycle_type',
+        'service_requests.request_type',
+        'service_requests.address',
+        'service_requests.status',
+        'service_requests.created_at as date_of_request',
+        'service_lists.store_id',
+        'service_lists.name as service_types',
+        'service_lists.name',
+        'service_lists.description',
+        'service_lists.rate as total_amount',
+        'store_info.shopname as assigned_to',
+        'store_info.shopname',
+        'store_info.contact as service_contact',
+        'store_info.address as service_address',
+        'store_info.contact as shopcontact',
+        'store_info.address as shopaddress',
+        'customer_info.id as customer_id',
+        DB::raw("CONCAT(store_info.firstname, ' ', store_info.lastname) AS store_name"),
+        DB::raw("CONCAT(customer_info.firstname, ' ', customer_info.lastname) AS customer_name"),
+        'customer_info.contact AS customer_contact',
+        'customer_info.address AS customer_address',
+        'store_info.address AS store_address',
+        'store_info.contact AS store_contact')
+        ->where('service_lists.store_id',$getId)
+        ->where('service_requests.id', $id)
+        ->join('service_lists','service_lists.id','=','service_requests.service_id')
+        ->join('store_info','store_info.id','=','service_lists.store_id')
+        ->join('customer_info','customer_info.user_id','=','service_requests.user_id')
+        ->first();
     
         return view('backend.services.create')->with('edit', $edit);
     }
@@ -160,24 +269,77 @@ class ServiceController extends Controller
     public function update_service(Request $request)
     {
         //
+
+        
         $this->validate($request,[
             'edit_id'=>'required',
             'assign' => 'required',
             'status' => 'required'
         ]);
 
-        $update_service = Service::find($request->edit_id);
-        
-        $update_service->assigned_to = $request->assign;
-        $update_service->status = $request->status;
-        $update_service->total_amount = $request->total_amount;
+        $data = DB::table('service_requests')
+        ->where('id',$request->edit_id)
+        ->update(
+            [
+                'status'=> $request->status,
+                'mechanic_id'=> $request->assign
+            ]
+        );
 
-        $update_service->save();
+        // $update_service = Service::find($request->edit_id);
+        // // mechanic_id
+        // $update_service->assigned_to = $request->assign;
+        // $update_service->status = $request->status;
+        // $update_service->total_amount = $request->total_amount;
+
+        // $update_service->save(); ongoing cancelled
+        $store_info = new store_info();
+     
+
+       
+        if ($request->status == 'ongoing') {
+            $data = [
+                'number' => $request->contact,
+                'message' => "Request in progress. Please wait for further updates."
+            ];
+    
+            $store_info->sendMessage($data);
+        }elseif ($request->status == 'cancelled'){
+            $data = [
+                'number' => $request->contact,
+                'message' => "Cancellation is not available at this time. Please proceed as planned."
+            ];
+    
+            $store_info->sendMessage($data);
+        }
+    
+        
+       
+        
 
         request()->session()->flash('success','Successfully updated service');
 
         return redirect()->route('services.index');
 
+    }
+    public static function getName($id){
+        $mechanic = DB::table('mechanics')
+            ->where('id', $id)
+            ->first();
+    
+        if ($mechanic) {
+            return $mechanic->name;
+        }
+    
+        return 'Mechanic Not Found';
+    }
+
+    public static function getMechanic(){
+
+        $user_table = new store_info();
+        $getId = $user_table->getStoreId();
+        $mechanic = DB::table('mechanics')->where('store_id', $getId)->get();
+        return $mechanic;
     }
 
 
@@ -221,6 +383,29 @@ class ServiceController extends Controller
         $store = DB::table('store_info')->get();
 
         return view('frontend.pages.services-request')->with('store',$store);
+    }
+
+
+    public function checkOtp(Request $request)
+    {
+    
+        $get = DB::table('otps')->where('otp',$request->otp)->where('user_id',$request->user_id)->where('status','pending')->first();
+
+        if ($get) {
+
+            DB::table('otps')->where('id',$get->id)->update(['status'=>'approved']);
+
+            DB::table('users')->where('id',$get->user_id)->update(['status'=>'active']);
+
+
+            return redirect()->route('login.form');
+
+         
+
+        } else {
+            request()->session()->flash('error','Invalid OTP. Please try again.');
+            return redirect()->back();
+        }
     }
 
     

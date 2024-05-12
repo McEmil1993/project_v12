@@ -38,7 +38,7 @@
                                 <td>{{$services->service_types}}</td>
                                 <td>{{$services->customer_name}}</td>
                                 <td>
-                                    <?= isset($services->assigned_to)? $services->assigned_to : 'N/A' ?>
+                                {{ \App\Http\Controllers\ServiceController::getName($services->mechanic_id) }}
                                 </td>
                                 <td>{{$services->total_amount}}</td>
                                 <td>
@@ -46,6 +46,8 @@
                                     <span class="badge badge-success">{{$services->status}}</span>
                                     @elseif($services->status=='pending')
                                     <span class="badge badge-warning">{{$services->status}}</span>
+                                    @elseif($services->status=='ongoing')
+                                    <span class="badge badge-primary">Ongoing</span>
                                     @else
                                     <span class="badge badge-danger">{{$services->status}}</span>
                                     @endif
@@ -105,7 +107,7 @@
                                         </tr>
                                         <tr>
                                             <td>Assign to</td>
-                                            <td> : <?= isset($services->assigned_to)? $services->assigned_to : 'N/A' ?>
+                                            <td> :  {{ \App\Http\Controllers\ServiceController::getName($services->mechanic_id) }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -124,6 +126,8 @@
                                                 <span class="badge badge-success">{{$services->status}}</span>
                                                 @elseif($services->status=='pending')
                                                 <span class="badge badge-warning">{{$services->status}}</span>
+                                                @elseif($services->status=='ongoing')
+                                                <span class="badge badge-primary">Ongoing</span>
                                                 @else
                                                 <span class="badge badge-danger">{{$services->status}}</span>
                                                 @endif

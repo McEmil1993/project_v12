@@ -17,6 +17,9 @@ use DB;
 use Hash;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\store_info;
+
+
 class FrontendController extends Controller
 {
    
@@ -45,7 +48,12 @@ class FrontendController extends Controller
     }   
 
     public function aboutUs(){
-        return view('frontend.pages.about-us');
+
+        $getId = $_GET['id'];
+
+        $data = DB::table('otps')->select('otps.id','otps.user_id','customer_info.contact')->join('customer_info','customer_info.user_id','=','otps.user_id')->where('otps.id',$getId)->where('otps.status','pending')->first();
+
+        return view('frontend.pages.about-us',compact('data'));
     }
 
     public function contact(){
@@ -367,7 +375,7 @@ class FrontendController extends Controller
     }
     public function loginSubmit(Request $request){
         $data= $request->all();
-        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'status'=>'active'])){
+        if(Auth::attempt(['email' => $data['email'], 'password' => $data['password'],'role'=>'user','status'=>'active'])){
             Session::put('user',$data['email']);
             request()->session()->flash('success','Logged in successfully!');
             return redirect()->route('home');
@@ -401,7 +409,7 @@ class FrontendController extends Controller
         $data['email'] =  $request->email;
         $data['password']=Hash::make($request->password);
         $data['role'] =  'user';
-        $data['status'] = 'active';
+        $data['status'] = 'inactive';
         
         // dd($data);
         $status=User::create($data);
@@ -416,10 +424,35 @@ class FrontendController extends Controller
             'address' => $request->address,
             'contact' => $request->contact,
         ];
+       
 
         DB::table('customer_info')->insert($data_cus);
 
-        return response()->json(['result' => '1']);
+
+        $store_info = new store_info();
+        $otp = mt_rand(100000, 999999);
+
+        $message = "Your One-Time Password (OTP) is: " . $otp . ". Do not share this OTP with anyone.";
+        
+        $data = [
+            'number' => $request->contact,
+            'message' => $message
+        ];
+
+        $store_info->sendMessage($data);
+
+        $datainsert = [
+            'user_id' => $getId->id,
+            'otp' => $otp,
+            'status' => 'pending'
+        ];
+
+        DB::table('otps')->insert($datainsert);
+        
+        $get = DB::table('otps')->where('otp',$otp)->where('status','pending')->first();
+
+        return response()->json(['result' => '1', 'data'=> $get]);
+
     }
     public function create(array $data){
         return User::create([
@@ -432,6 +465,10 @@ class FrontendController extends Controller
     // Reset password
     public function showResetForm(){
         return view('auth.passwords.old-reset');
+    }
+
+     public function getOTP(){
+        return view('frontend.pages.otpfile');
     }
 
     public function subscribe(Request $request){

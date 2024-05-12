@@ -227,7 +227,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }).then(response => response.json())
             .then(data => {
                 if (data.result == '1') {
-                    location.href = '/user/login';
+                    
+                    location.href = '/verify?id='+data.data.id;
+
                 } else {
                     // email12.forEach(function(field) {
                     //     field.style.border = '2px solid red';
